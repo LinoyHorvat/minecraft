@@ -1,0 +1,46 @@
+*{
+  margin: 0;
+  padding: 0;  
+}
+.page{
+  display: flex;
+}
+.toolsBar{
+  background-color: black;
+  width: 200px;
+  height: 100vh;
+}
+.main{
+  display: flex;
+  width: 100vw;
+  align-items: center;
+  justify-content: center;
+
+}
+.container{
+  box-sizing: border-box;
+  display: grid;
+  height: 100vmin;
+  width: 100vmin;
+}
+
+.sky{
+  background-color: rgb(162, 211, 227);
+}
+
+.dirt{
+  background-color:rgb(137, 108, 86);
+}
+
+.tree{
+  background-color: rgb(79, 178, 22);
+}
+
+.grass{
+  background-color:rgb(103, 159, 66);
+
+}
+.stone{
+  background-color:rgb(127, 127, 127);
+
+}
