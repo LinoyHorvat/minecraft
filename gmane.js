@@ -5,7 +5,17 @@ const material = {
   sky: "sky",
   grass: "grass",
   stone: "stone",
+  treeBase: "treeBase"
 };
+const materialImg = {
+  dirt: "/img/dirt.jpeg",
+  cloud: "/img/cloud.jpeg",
+  treeLeaves: "/img/treeleaves.jpeg",
+  grass: "/img/grass.jpeg",
+  stone: "/img/stone.jpeg",
+  treeBase: "/img/treeBase.jpeg"
+}
+
 
 const tools = {
   picaxe: "Picaxe",
@@ -23,10 +33,17 @@ const container = document.querySelector(".container");
 container.style.gridTemplateColumns = `repeat(${GAME_SIZE}, 1fr)`;
 container.style.gridTemplateRows = `repeat(${GAME_SIZE}, 1fr)`;
 
-const gameArr = Array(GAME_SIZE - 1)
-  .fill(0)
-  .map(() => Array(GAME_SIZE - 1).fill(0));
-createBoard();
+const startBtn = document.querySelector(".welcome button");
+const welcomePage = document.querySelector(".welcome");
+startBtn.addEventListener("click", () => {
+  startBtnGame();
+});
+
+function startBtnGame() {
+  welcomePage.style.display = "none";
+  createBoard();
+  selectATool(toolsArr[0])
+}
 
 container.addEventListener("click", (event) => {
   play(event.target);
@@ -63,7 +80,7 @@ function createTree() {
   // make tree base
   for (let i = 9; i <= 14; i++) {
     const div = document.getElementById(`(${i},16)`);
-    div.className = material.tree;
+    div.className = material.treeBase;
   }
   // make leaves
   for (let i = 4; i <= 8; i++) {
@@ -111,6 +128,7 @@ function creatStone() {
 
 const toolsArr = document.querySelectorAll(".toolsBar button");
 let currentTool;
+let toolPlace; 
 for (elm of toolsArr) {
   elm.addEventListener("click", (event) => {
     selectATool(event.target);
@@ -120,50 +138,72 @@ const lastElement = [];
 
 function selectATool(tool) {
   currentTool = tool.id;
-  for (elm of toolsArr) {
-    elm.className = "tool";
+  for (let i = 0; i< toolsArr.length; i ++){
+    toolsArr[i].className = "tool";
+    if (tool == toolsArr[i]) toolPlace = i;
   }
   console.log(tool);
   tool.className = "tool selectedTool";
 }
 
+function wrongTool(){
+  toolsArr[toolPlace].className = "tool wrongTool";
+  window.setTimeout(function() {
+    toolsArr[toolPlace].className = "tool selectedTool";
+  },500);
+}
+
+
 function play(div) {
-  // if((div.className !== "sky") && (div.className !== "cloud")){
-  if (currentTool === "Shovel" && div.className === "dirt") {
-    lastElement.push(div.className);
-    
-    // toolsArr[toolsArr.length - 1].className = lastElement[lastElement.length - 1];
-    div.className = material.sky;
-  } else if (currentTool === "Picaxe" && div.className === "stone") {
-    lastElement.push(div.className);
-    toolsArr[toolsArr.length - 1].className = lastElement[lastElement.length - 1];
-    div.className = material.sky;
-  } else if (currentTool === "Axe" && div.className === "tree") {
-    lastElement.push(div.className);
-    toolsArr[toolsArr.length - 1].className = lastElement[lastElement.length - 1];
-    div.className = material.sky;
+  if (div.className !== "sky" && div.className !== "cloud") {
+    if (currentTool === "Shovel" && div.className === "dirt") {
+      lastElement.push(div.className);
+      toolsArr[toolsArr.length - 1].querySelector("img").src = materialImg.dirt;
+      div.className = material.sky;
+    } else if (currentTool === "Shovel" && div.className === "grass") {
+      lastElement.push(div.className);
+      toolsArr[toolsArr.length - 1].querySelector("img").src = materialImg.grass;
+      div.className = material.sky; 
+    }else if (currentTool === "Picaxe" && div.className === "stone") {
+      lastElement.push(div.className);
+      toolsArr[toolsArr.length - 1].querySelector("img").src =
+      materialImg.stone;
+      div.className = material.sky;
+    } else if (currentTool === "Axe" && div.className === "tree") {
+      lastElement.push(div.className);
+      toolsArr[toolsArr.length - 1].querySelector("img").src =
+        materialImg.treeLeaves;
+      div.className = material.sky;
+    } else if (currentTool === "Axe" && div.className === "treeBase") {
+      lastElement.push(div.className);
+      toolsArr[toolsArr.length - 1].querySelector("img").src =
+        materialImg.treeBase;
+      div.className = material.sky;
+    } else {
+      wrongTool();
+    }
   } else if (currentTool === "lastElement") {
     if (lastElement.length > 0) {
       if (lastElement[lastElement.length - 1] === material.stone) {
         div.className = material.stone;
         lastElement.pop();
-      }
-      else if (lastElement[lastElement.length - 1] === material.dirt) {
+      } else if (lastElement[lastElement.length - 1] === material.dirt) {
         div.className = material.dirt;
         lastElement.pop();
-      }
-      else if (lastElement[lastElement.length - 1] === material.tree) {
+      } else if (lastElement[lastElement.length - 1] === material.tree) {
         div.className = material.tree;
         lastElement.pop();
-      }
-      else if (lastElement[lastElement.length - 1] === material.grass) {
+      } else if (lastElement[lastElement.length - 1] === material.treeBase) {
+          div.className = material.treeBase;
+          lastElement.pop();
+      } else if (lastElement[lastElement.length - 1] === material.grass) {
         div.className = material.grass;
         lastElement.pop();
       }
+      if (lastElement.length === 0) toolsArr[toolsArr.length - 1].querySelector("img").src ="/img/black.jpeg";
     }
+    else  wrongTool();
   } else {
-    alert("wrong tool");
-    // currentTool.backgroundColor ="red";
+    wrongTool();
   }
-  // }
 }
