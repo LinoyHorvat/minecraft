@@ -7,15 +7,47 @@
 }
 .toolsBar{
   background-color: black;
-  width: 200px;
+  width: 400px;
   height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  align-items: center;
 }
+button{
+  height: 15%;
+  width: 20%;
+  background: transparent;
+  color: white;
+  font-size: 20px;
+  border: 1px solid white;
+  cursor: pointer;
+}
+.tool img{
+  height: 70%;
+  width: 90%;
+}
+.tool:hover{
+  border: 1px solid blue;
+  background-color: blue;
+}
+.selectedTool{
+  background-color: blue;
+}
+.selectedTool img{
+  height: 70%;
+  width: 90%;
+}
+div:hover{
+  border: 1px solid white;
+}
+
 .main{
   display: flex;
   width: 100vw;
   align-items: center;
   justify-content: center;
-
 }
 .container{
   box-sizing: border-box;
@@ -29,18 +61,25 @@
 }
 
 .dirt{
-  background-color:rgb(137, 108, 86);
+  /* background-color:rgb(137, 108, 86); */
+  background-image: url("img/dirt.jpeg");
+  /* background-repeat:no-repeat; */
 }
 
 .tree{
-  background-color: rgb(79, 178, 22);
+  /* background-color: rgb(79, 178, 22); */
+  background-image: url("img/treeleaves.jpeg");
+  /* background-repeat:no-repeat; */
 }
 
 .grass{
-  background-color:rgb(103, 159, 66);
-
+  /* background-color:rgb(103, 159, 66); */
+  background-image: url("img/grass.jpeg");
+  /* background-repeat:no-repeat; */
 }
 .stone{
-  background-color:rgb(127, 127, 127);
-
+  /* background-color:rgb(127, 127, 127); */
+  background-image: url("img/stone.jpeg");
+  /* background-repeat:no-repeat; */
 }
+

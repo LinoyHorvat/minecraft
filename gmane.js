@@ -10,26 +10,18 @@ const material = {
 const tools = {
   picaxe: "Picaxe",
   shovel: "Shovel",
-  axe: "Axe"
-}
+  axe: "Axe",
+};
 
 let GAME_SIZE = 20;
 
 const toolsBar = document.querySelector(".toolsBar");
+const picaxe = document.querySelector(".tool Picaxe");
+const shovel = document.querySelector(".tool Shovel");
+const axe = document.querySelector(".tool Axe");
 const container = document.querySelector(".container");
 container.style.gridTemplateColumns = `repeat(${GAME_SIZE}, 1fr)`;
 container.style.gridTemplateRows = `repeat(${GAME_SIZE}, 1fr)`;
-
-createTools();
-
-function createTools(){
-  const tool = document.createElement("tool");
-  tool.setAttribute("id", `${tools.shovel}`);
-  tool.innerHTML = `tools.shovel`;
-  tool.className = tools.shovel;
-  toolsBar.appendChild(tool);
-}
-
 
 const gameArr = Array(GAME_SIZE - 1)
   .fill(0)
@@ -45,7 +37,7 @@ function createBoard() {
     for (let col = 0; col < GAME_SIZE; col++) {
       const div = document.createElement("div");
       div.setAttribute("id", `(${row},${col})`);
-      div.innerHTML = `(${row},${col})`;
+      // div.innerHTML = `(${row},${col})`;
       div.className = material.stone;
       // create sky
       if (row < 15) {
@@ -75,7 +67,7 @@ function createTree() {
   }
   // make leaves
   for (let i = 4; i <= 8; i++) {
-    for(let j = 15; j< 18; j++){
+    for (let j = 15; j < 18; j++) {
       const div = document.getElementById(`(${i},${j})`);
       div.className = material.tree;
     }
@@ -91,7 +83,7 @@ function createTree() {
 
 function createCloud() {
   for (let i = 3; i <= 4; i++) {
-    for(let j = 2; j< 9; j++){
+    for (let j = 2; j < 9; j++) {
       const div = document.getElementById(`(${i},${j})`);
       div.className = material.cloud;
     }
@@ -117,8 +109,61 @@ function creatStone() {
   }
 }
 
-function play(div) {
-  console.log(div);
-  div.className = material.sky;
+const toolsArr = document.querySelectorAll(".toolsBar button");
+let currentTool;
+for (elm of toolsArr) {
+  elm.addEventListener("click", (event) => {
+    selectATool(event.target);
+  });
+}
+const lastElement = [];
 
+function selectATool(tool) {
+  currentTool = tool.id;
+  for (elm of toolsArr) {
+    elm.className = "tool";
+  }
+  console.log(tool);
+  tool.className = "tool selectedTool";
+}
+
+function play(div) {
+  // if((div.className !== "sky") && (div.className !== "cloud")){
+  if (currentTool === "Shovel" && div.className === "dirt") {
+    lastElement.push(div.className);
+    
+    // toolsArr[toolsArr.length - 1].className = lastElement[lastElement.length - 1];
+    div.className = material.sky;
+  } else if (currentTool === "Picaxe" && div.className === "stone") {
+    lastElement.push(div.className);
+    toolsArr[toolsArr.length - 1].className = lastElement[lastElement.length - 1];
+    div.className = material.sky;
+  } else if (currentTool === "Axe" && div.className === "tree") {
+    lastElement.push(div.className);
+    toolsArr[toolsArr.length - 1].className = lastElement[lastElement.length - 1];
+    div.className = material.sky;
+  } else if (currentTool === "lastElement") {
+    if (lastElement.length > 0) {
+      if (lastElement[lastElement.length - 1] === material.stone) {
+        div.className = material.stone;
+        lastElement.pop();
+      }
+      else if (lastElement[lastElement.length - 1] === material.dirt) {
+        div.className = material.dirt;
+        lastElement.pop();
+      }
+      else if (lastElement[lastElement.length - 1] === material.tree) {
+        div.className = material.tree;
+        lastElement.pop();
+      }
+      else if (lastElement[lastElement.length - 1] === material.grass) {
+        div.className = material.grass;
+        lastElement.pop();
+      }
+    }
+  } else {
+    alert("wrong tool");
+    // currentTool.backgroundColor ="red";
+  }
+  // }
 }
